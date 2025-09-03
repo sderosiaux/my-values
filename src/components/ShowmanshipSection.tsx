@@ -47,17 +47,17 @@ export default function ShowmanshipSection() {
           >
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                I don't ask for permission to create.
+                We don't ask for permission to create.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
                 Innovation requires courage. While others seek approval, 
-                I build solutions. Progress isn't a committee decision.
+                we build solutions. Progress isn't a committee decision.
               </p>
             </motion.div>
             
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                I ask questions, I try things, then I <span className="text-blue-500">show</span>.
+                We ask questions, try things, then <span className="text-blue-500">show</span>.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
                 Curiosity drives exploration. Experiments generate insights. 

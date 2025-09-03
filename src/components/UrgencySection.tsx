@@ -47,17 +47,17 @@ export default function UrgencySection() {
           >
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                I don't wait. I move.
+                We don't wait. We move.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
-                Momentum is everything. While others deliberate, I execute. 
+                Momentum is everything. While others deliberate, we execute. 
                 The perfect moment is a myth—the right moment is now.
               </p>
             </motion.div>
             
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                If it takes less than <span className="text-red-500">5 minutes</span>, I do it now.
+                If it takes less than <span className="text-red-500">5 minutes</span>, we do it now.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
                 Quick decisions compound into massive advantages. 
@@ -71,7 +71,7 @@ export default function UrgencySection() {
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
                 Because it does. Every task is an opportunity to demonstrate excellence. 
-                Mediocrity is a choice—I choose intensity.
+                Mediocrity is a choice—we choose intensity.
               </p>
             </motion.div>
           </motion.div>

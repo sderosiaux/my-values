@@ -59,7 +59,7 @@ export default function EnergyAISection() {
           >
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                I lead with energy. I use <span className="text-orange-500">AI</span> in everything I do.
+                We lead with energy. We use <span className="text-orange-500">AI</span> in everything we do.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
                 Energy is contagious. AI is multiplying. Together, they create 
@@ -69,10 +69,10 @@ export default function EnergyAISection() {
             
             <motion.div variants={textVariants} className="text-center">
               <p className="text-2xl md:text-3xl font-bold text-black mb-4 leading-tight">
-                If you don't embrace both, you're already behind.
+                Those who don't embrace both are already behind.
               </p>
               <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
-                The future belongs to those who combine human passion with machine precision. 
+                The future belongs to teams who combine human passion with machine precision. 
                 Adaptation isn't optional—it's survival.
               </p>
             </motion.div>

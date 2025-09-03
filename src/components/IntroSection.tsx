@@ -25,8 +25,8 @@ export default function IntroSection() {
           transition={{ delay: 0.4, duration: 0.8 }}
         >
           <div className="text-2xl md:text-3xl font-semibold text-black leading-relaxed">
-            <p className="mb-4">How I work.</p>
-            <p>How I expect people around me to work.</p>
+            <p className="mb-4">These are my values.</p>
+            <p>They define who I want to work with.</p>
           </div>
           
           <motion.div 
@@ -36,11 +36,12 @@ export default function IntroSection() {
             transition={{ delay: 0.6, duration: 0.8 }}
           >
             <p className="mb-6">
-              This isn't just a collection of principles. It's a commitment to excellence, 
-              a declaration of standards, and an invitation to those who share this vision.
+              This isn't about conformity—it's about alignment. It's a filter for finding 
+              people who naturally operate at this level.
             </p>
             <p>
-              These values shape every decision, every interaction, every line of code.
+              If these values resonate with you, we're meant to collaborate. 
+              If not, we'll both know quickly.
             </p>
           </motion.div>
         </motion.div>

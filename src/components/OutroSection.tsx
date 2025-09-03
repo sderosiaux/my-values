@@ -62,24 +62,24 @@ export default function OutroSection() {
                 animate={isCommitted ? { color: ["#ffffff", "#22c55e", "#ffffff"] } : {}}
                 transition={{ duration: 1 }}
               >
-                If this feels like you, you're in the right place.
+                If these values feel like you, you're in the right place.
               </motion.p>
               <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
                 You understand that excellence isn't an accident. You know that impact 
                 requires intention. You believe in the power of uncompromising standards.
                 {isCommitted && (
-                  <span className="text-green-400 font-normal"> Welcome to the movement.</span>
+                  <span className="text-green-400 font-normal"> Let's build something extraordinary.</span>
                 )}
               </p>
             </motion.div>
             
             <motion.div variants={textVariants}>
               <p className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
-                If not, you'll know fast.
+                If not, we'll both know fast.
               </p>
               <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
-                These aren't suggestions. They're requirements. Not everyone operates at this level—
-                and that's exactly what makes the difference.
+                These aren't suggestions. They're requirements for extraordinary collaboration. 
+                Not everyone operates at this level—and that's exactly what makes the difference.
               </p>
             </motion.div>
           </motion.div>
