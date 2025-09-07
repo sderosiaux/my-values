@@ -6,7 +6,7 @@ A personal manifesto sharing the core values that guide meaningful collaboration
 
 ## What is this?
 
-This is my personal declaration of values - the principles I strive to live by and the foundation for how I approach work, relationships, and life. By sharing these values openly, I hope to:
+This is my personal declaration of values - the principles that drive me every day and the foundation for how I approach work, relationships, and life. These are the values I embody and encourage everyone working with me at Conduktor to adopt. By sharing these values openly, I hope to:
 
 - Create deeper connections with like-minded individuals
 - Foster more authentic and meaningful collaborations
