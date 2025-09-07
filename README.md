@@ -2,6 +2,8 @@
 
 A personal manifesto sharing the core values that guide meaningful collaboration and authentic relationships.
 
+🌐 **[Read the full manifesto here](https://sderosiaux.github.io/my-values/)**
+
 ## What is this?
 
 This is my personal declaration of values - the principles I strive to live by and the foundation for how I approach work, relationships, and life. By sharing these values openly, I hope to:
@@ -13,20 +15,14 @@ This is my personal declaration of values - the principles I strive to live by a
 
 ## Core Values
 
-### 🤝 **Genuine Connection**
-Building relationships based on authenticity, empathy, and mutual respect.
+### ⚡ **Urgency in Action**
+We don't wait. We move. Momentum is everything. If it takes less than 5 minutes, we do it now. Work like it matters—because it does.
 
-### 🎯 **Purposeful Action**
-Making decisions aligned with core principles, not just immediate gains.
+### 🎭 **Proactive Showmanship**
+We don't ask for permission to create. We ask questions, try things, then show. Show, don't tell. Talk less, do more. Demos beat presentations.
 
-### 🌱 **Continuous Growth**
-Embracing learning, feedback, and evolution as a constant journey.
-
-### 💡 **Open Communication**
-Fostering environments where honest dialogue and diverse perspectives thrive.
-
-### ⚖️ **Balanced Perspective**
-Seeking harmony between different aspects of life and considering multiple viewpoints.
+### 🔥 **Energy + AI**
+We lead with energy. We use AI in everything we do. Those who don't embrace both are already behind. Results first. Rewards follow.
 
 ## Why Share Values?
 
@@ -35,10 +31,6 @@ In a world of surface-level interactions, sharing our deeper values creates oppo
 - **Reduced Friction**: Clear expectations from the start
 - **Meaningful Impact**: Focus energy on what truly matters
 - **Authentic Relationships**: Connect beyond professional facades
-
-## Visit the Manifesto
-
-🌐 **[Read the full manifesto here](https://sderosiaux.github.io/my-values/)**
 
 ## Join the Movement
 
