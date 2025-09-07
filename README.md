@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+# My Values 🌟
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal manifesto sharing the core values that guide meaningful collaboration and authentic relationships.
 
-Currently, two official plugins are available:
+## What is this?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is my personal declaration of values - the principles I strive to live by and the foundation for how I approach work, relationships, and life. By sharing these values openly, I hope to:
 
-## Expanding the ESLint configuration
+- Create deeper connections with like-minded individuals
+- Foster more authentic and meaningful collaborations
+- Build trust through transparency about what drives me
+- Inspire others to reflect on and share their own values
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Core Values
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🤝 **Genuine Connection**
+Building relationships based on authenticity, empathy, and mutual respect.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 🎯 **Purposeful Action**
+Making decisions aligned with core principles, not just immediate gains.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🌱 **Continuous Growth**
+Embracing learning, feedback, and evolution as a constant journey.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 💡 **Open Communication**
+Fostering environments where honest dialogue and diverse perspectives thrive.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ⚖️ **Balanced Perspective**
+Seeking harmony between different aspects of life and considering multiple viewpoints.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Why Share Values?
+
+In a world of surface-level interactions, sharing our deeper values creates opportunities for:
+- **Aligned Collaboration**: Work with people who share similar principles
+- **Reduced Friction**: Clear expectations from the start
+- **Meaningful Impact**: Focus energy on what truly matters
+- **Authentic Relationships**: Connect beyond professional facades
+
+## Visit the Manifesto
+
+🌐 **[Read the full manifesto here](https://sderosiaux.github.io/my-values/)**
+
+## Join the Movement
+
+Consider creating your own values manifesto. When we openly share what drives us, we create space for more meaningful connections and purposeful collaboration.
+
+---
+
+*"The privilege of a lifetime is to become who you truly are."* - Carl Jung
