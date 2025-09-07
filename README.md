@@ -6,12 +6,7 @@ A personal manifesto sharing the core values that guide meaningful collaboration
 
 ## What is this?
 
-This is my personal declaration of values - the principles that drive me every day and the foundation for how I approach work, relationships, and life. These are the values I embody and encourage everyone working with me at Conduktor to adopt. By sharing these values openly, I hope to:
-
-- Create deeper connections with like-minded individuals
-- Foster more authentic and meaningful collaborations
-- Build trust through transparency about what drives me
-- Inspire others to reflect on and share their own values
+This is my personal declaration of values - the principles that drive me every day and the foundation for how I approach work, relationships, and life. These are the values I embody and encourage everyone working with me at Conduktor to adopt.
 
 ## Core Values
 
@@ -23,14 +18,6 @@ We don't ask for permission to create. We ask questions, try things, then show. 
 
 ### 🔥 **Energy + AI**
 We lead with energy. We use AI in everything we do. Those who don't embrace both are already behind. Results first. Rewards follow.
-
-## Why Share Values?
-
-In a world of surface-level interactions, sharing our deeper values creates opportunities for:
-- **Aligned Collaboration**: Work with people who share similar principles
-- **Reduced Friction**: Clear expectations from the start
-- **Meaningful Impact**: Focus energy on what truly matters
-- **Authentic Relationships**: Connect beyond professional facades
 
 ## Join the Movement
 
