@@ -55,7 +55,7 @@ function RouteLine() {
     uniforms.uReveal.value = 1 - Math.pow(1 - k, 3);
     m.opacity = ago < 0 ? 0 : ago < 6 ? 0.95 : Math.max(0.35, 0.95 - (ago - 6) * 0.2);
   });
-  return <mesh geometry={geo} material={m} frustumCulled={false} />;
+  return <mesh name="route-line" geometry={geo} material={m} frustumCulled={false} />;
 }
 
 function Zipline() {
@@ -68,15 +68,15 @@ function Zipline() {
         <cylinderGeometry args={[0.13, 0.16, 4.6, 12]} />
         <meshStandardMaterial color={amber} roughness={0.45} />
       </mesh>
-      <mesh position={[0, SPOTS.zipTop[1], SPOTS.zipPole[2]]} castShadow>
-        <boxGeometry args={[1.6, 0.18, 0.18]} />
+      <mesh position={[(SPOTS.zipPole[0] + SPOTS.zipTop[0] + 0.2) / 2, SPOTS.zipTop[1] + 0.12, SPOTS.zipPole[2]]} castShadow>
+        <boxGeometry args={[SPOTS.zipTop[0] + 0.2 - SPOTS.zipPole[0], 0.18, 0.18]} />
         <meshStandardMaterial color={amber} roughness={0.45} />
       </mesh>
       <mesh position={[SPOTS.zipBottom[0], SPOTS.zipBottom[1] - 2.1, SPOTS.zipBottom[2]]} castShadow>
         <cylinderGeometry args={[0.13, 0.16, 4.2, 12]} />
         <meshStandardMaterial color={amber} roughness={0.45} />
       </mesh>
-      <mesh geometry={cable}>
+      <mesh name="cable" geometry={cable}>
         <meshStandardMaterial color="#3A3F47" roughness={0.3} metalness={0.8} />
       </mesh>
     </group>
@@ -96,7 +96,7 @@ function Rope() {
   });
   return (
     <group>
-      <mesh geometry={geo} material={m} frustumCulled={false} />
+      <mesh name="cable" geometry={geo} material={m} frustumCulled={false} />
       <mesh position={[SPOTS.ropeTop[0], ROOFS.r4.h + (SPOTS.ropeTop[1] - ROOFS.r4.h) / 2 + 0.05, SPOTS.ropeTop[2]]} castShadow>
         <cylinderGeometry args={[0.045, 0.06, SPOTS.ropeTop[1] - ROOFS.r4.h + 0.1, 10]} />
         <meshStandardMaterial color="#C9CDD3" roughness={0.35} metalness={0.6} />
@@ -112,7 +112,7 @@ function Beam() {
   const len = a.distanceTo(b) + 1;
   const pitch = Math.atan2(b.y - a.y, a.z - b.z);
   return (
-    <mesh position={[mid.x, mid.y + 0.15, mid.z]} rotation-x={pitch} castShadow receiveShadow>
+    <mesh name="beam" position={[mid.x, mid.y + 0.15, mid.z]} rotation-x={pitch} castShadow receiveShadow>
       <boxGeometry args={[0.7, 0.3, len]} />
       <meshStandardMaterial color="#B9BEC6" roughness={0.35} metalness={0.75} />
     </mesh>

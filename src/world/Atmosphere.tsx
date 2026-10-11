@@ -69,7 +69,7 @@ export function Atmosphere() {
 
   return (
     <>
-      <mesh material={dome} renderOrder={-1} frustumCulled={false}>
+      <mesh name="sky" material={dome} renderOrder={-1} frustumCulled={false}>
         <sphereGeometry args={[2600, 32, 16]} />
       </mesh>
       <hemisphereLight args={['#CFE0FF', '#DCD3C6', 0.62]} />

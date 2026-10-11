@@ -1,5 +1,6 @@
 import { PerformanceMonitor } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import { Suspense, useEffect, useState } from 'react';
 import { audio } from './audio/engine';
 import { Director, director } from './director/Director';
@@ -16,6 +17,18 @@ import { Judgment } from './world/Judgment';
 import { Limits } from './world/Limits';
 import { Share } from './world/Share';
 import { Signs } from './world/Signs';
+
+// QA: expose the scene to the debug hook (window.__mv.scene).
+function ExposeScene() {
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    const w = window as unknown as { __mv?: Record<string, unknown> };
+    if (w.__mv) w.__mv.scene = scene;
+  }, [scene]);
+  return null;
+}
+
+const SHOW_ARMS = false;
 
 export function App() {
   const [quality, setQuality] = useState<'high' | 'low'>('high');
@@ -54,8 +67,14 @@ export function App() {
           <Extras />
         </Suspense>
         <Director />
-        {/* After the director so the arms read this frame's camera, not the last one. */}
-        <Arms />
+        <ExposeScene />
+        {/* First-person arms are off until a production-quality rigged, textured model replaces the
+            WebXR hand (too low-poly: fingers fold into blocks). Mount after the director when back. */}
+        {SHOW_ARMS && (
+          <Suspense fallback={null}>
+            <Arms />
+          </Suspense>
+        )}
         <Effects quality={quality} />
       </Canvas>
       <Hud onStart={start} />

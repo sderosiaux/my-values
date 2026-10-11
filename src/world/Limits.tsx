@@ -26,7 +26,7 @@ function Readout({ position, lines, show }: { position: [number, number, number]
     group.current!.scale.setScalar(0.85 + Math.min(1, k) * 0.15);
   });
   return (
-    <Billboard ref={group} position={position}>
+    <Billboard ref={group} name="timed-label" position={position}>
       <Text font={FONT_MONO} fontSize={0.9} color={VIOLET} anchorY="bottom" outlineWidth={0.05} outlineColor="#ffffff">
         {lines[0]}
       </Text>
@@ -115,7 +115,8 @@ function JumpArc() {
   const group = useRef<Group>(null);
   useFrame(() => {
     const ago = firedAgo('self-limit');
-    group.current!.visible = ago >= 0;
+    // Gone once you take the rope: the preview sits on your path across the gap.
+    group.current!.visible = ago >= 0 && !(firedAgo('rope') > 0.6);
     uniforms.uTime.value = frame.gameTime;
     m.opacity = Math.min(1, Math.max(0, ago) / 0.5);
   });
@@ -124,7 +125,7 @@ function JumpArc() {
       <group ref={group}>
         <mesh geometry={geo} material={m} />
       </group>
-      <Readout position={[0, ROOFS.r4.h + 2.2, EDGE_Z - 6]} lines={['YOUR JUMP 7 m', 'not enough on your own']} show={() => firedAgo('self-limit')} />
+      <Readout position={[0, ROOFS.r4.h + 2.2, EDGE_Z - 6]} lines={['YOUR JUMP 7 m', 'not enough on your own']} show={() => (firedAgo('rope') > 0.6 ? 0 : firedAgo('self-limit'))} />
     </group>
   );
 }

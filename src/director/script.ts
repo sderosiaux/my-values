@@ -57,7 +57,6 @@ const jump = (from: P, to: P, apex: number, dur: number, extra: Partial<Segment>
   };
 };
 
-/** Ride a cable from `top` to `anchor`, letting go at fraction `until` of its length. */
 /** A short leap that ends in a grab, not a landing. */
 const hop = (from: P, to: P, apex: number, dur: number): Segment => {
   const a = v(from), b = v(to);
@@ -73,7 +72,8 @@ const hop = (from: P, to: P, apex: number, dur: number): Segment => {
   };
 };
 
-const zip = (top: P, anchor: P, sag: number, until: number, dur: number): Segment => {
+/** Ride a cable from `top` to `anchor`, grabbing it at fraction `from` and letting go at `until`. */
+const zip = (top: P, anchor: P, sag: number, from: number, until: number, dur: number): Segment => {
   const a = v(top).setY(top[1] - HANG), b = v(anchor).setY(anchor[1] - HANG);
   return {
     kind: 'zip',
@@ -81,7 +81,7 @@ const zip = (top: P, anchor: P, sag: number, until: number, dur: number): Segmen
     events: [[0, 'zip-on'], [1, 'zip-off']],
     pose: (u, o) => {
       const e = u < 0.15 ? easeIn(u / 0.15) * 0.15 : u; // hook on, then full speed
-      const k = e * until;
+      const k = from + e * (until - from);
       lerpPose(a, b, k, o);
       o.pos.y -= 4 * sag * k * (1 - k);
       o.bob = 0;
@@ -183,7 +183,8 @@ const R = ROOFS;
 
 // Let go a few metres before the far roof edge, then drop onto the roof.
 const ZIP_RELEASE = (127 - 57.5) / (136 - 57.5);
-const ROPE_RELEASE = (327.5 - 299.6) / (334 - 299.6);
+const ROPE_GRAB = (301.6 - 299.2) / (334 - 299.2);
+const ROPE_RELEASE = (327.5 - 299.2) / (334 - 299.2);
 function cablePoint(top: P, anchor: P, sag: number, k: number): P {
   const y = top[1] + (anchor[1] - top[1]) * k - 4 * sag * k * (1 - k) - HANG;
   return [top[0] + (anchor[0] - top[0]) * k, y, top[2] + (anchor[2] - top[2]) * k];
@@ -201,21 +202,21 @@ export const CHAPTERS: readonly Chapter[] = [
       jump(z(R.start, 0, -1.5), z(R.start, 0, -4.6), 0.9, 0.5, { events: [[0, 'vault']] }),
       run(z(R.start, 0, -4.6), z(R.start, 0, -14), 7.8),
       jump(z(R.start, 0, -14), z(R.r1, 0, -22.5), 1.5, 0.85),
-      decel(z(R.r1, 0, -22.5), z(R.r1, 0, -28), 1.1, [[0.5, 'paragraph']]),
+      decel(z(R.r1, 0, -22.5), z(R.r1, 0, -28), 1.1),
     ],
   },
   // 1 · SPEED: zipline (reversible, fast) then a gap with no net (slow-mo).
   {
     segments: [
       run(z(R.r1, 0, -28), z(R.r1, 0, -55.5), 7.8, [[0.4, 'card']]),
-      zip(SPOTS.zipTop, SPOTS.zipBottom, ZIP_SAG, ZIP_RELEASE, 3.2),
-      jump(cablePoint(SPOTS.zipTop, SPOTS.zipBottom, ZIP_SAG, ZIP_RELEASE), z(R.r2, 0, -131.5), 0.25, 0.5),
-      run(z(R.r2, 0, -131), z(R.r2, 0, -168), 8.2),
+      zip(SPOTS.zipTop, SPOTS.zipBottom, ZIP_SAG, 0, ZIP_RELEASE, 3.2),
+      jump(cablePoint(SPOTS.zipTop, SPOTS.zipBottom, ZIP_SAG, ZIP_RELEASE), z(R.r2, 3.2, -131.5), 0.25, 0.5),
+      run(z(R.r2, 3.2, -131.5), z(R.r2, 0, -168), 8.2),
       jump(z(R.r2, 0, -168), z(R.r3, 0, -185), 3, 1.3, {
         events: [[0.24, 'slowmo-in'], [0.78, 'slowmo-out']],
         slowmo: { from: 0.22, to: 0.78, scale: 0.2 },
       }),
-      decel(z(R.r3, 0, -185), z(R.r3, 0, -192), 1.2, [[0.5, 'paragraph']]),
+      decel(z(R.r3, 0, -185), z(R.r3, 0, -192), 1.2),
     ],
   },
   // 2 · SHOW IT: the billboard flips from pitch to demo; slide under it.
@@ -225,7 +226,7 @@ export const CHAPTERS: readonly Chapter[] = [
       slide(z(R.r3, 0, -206.5), z(R.r3, 0, -219.5), 1.0, 1.0),
       run(z(R.r3, 0, -219.5), z(R.r3, 0, -229), 7.8),
       jump(z(R.r3, 0, -229), z(R.r4, 0, -238), 1.2, 0.8),
-      decel(z(R.r4, 0, -238), z(R.r4, 0, -245), 1.2, [[0.5, 'paragraph']]),
+      decel(z(R.r4, 0, -238), z(R.r4, 0, -245), 1.2),
     ],
   },
   // 3 · LIMITS: the tool tops out short of the far roof, so does your jump; someone throws you a line.
@@ -242,10 +243,10 @@ export const CHAPTERS: readonly Chapter[] = [
         [0.78, [1.4, 20, -334]],
         [1, [0, 18.6, -315]],
       ], [[0.06, 'crane'], [0.38, 'tool-limit'], [0.5, 'self-limit'], [0.74, 'rope']]),
-      hop(z(R.r4, 0, -297.5), [0, SPOTS.ropeTop[1] - HANG, SPOTS.ropeTop[2]], 0.35, 0.5),
-      zip(SPOTS.ropeTop, SPOTS.ropeEnd, ROPE_SAG, ROPE_RELEASE, 1.9),
+      hop(z(R.r4, 0, -297.5), cablePoint(SPOTS.ropeTop, SPOTS.ropeEnd, ROPE_SAG, ROPE_GRAB), 0.45, 0.55),
+      zip(SPOTS.ropeTop, SPOTS.ropeEnd, ROPE_SAG, ROPE_GRAB, ROPE_RELEASE, 1.8),
       jump(cablePoint(SPOTS.ropeTop, SPOTS.ropeEnd, ROPE_SAG, ROPE_RELEASE), z(R.r5, -1.2, -333.5), 0.5, 0.5),
-      decel(z(R.r5, -1.2, -333.5), z(R.r5, 0, -341), 1.3, [[0.5, 'paragraph']]),
+      decel(z(R.r5, -1.2, -333.5), z(R.r5, 0, -341), 1.3),
     ],
   },
   // 4 · JUDGMENT: AI draws five routes; the visitor picks. The branch lives in JUDGMENT_BRANCHES.
@@ -260,7 +261,7 @@ export const CHAPTERS: readonly Chapter[] = [
     segments: [
       run(z(R.r6, 8, -400), z(R.r6, 8, -447.5), 7.6, [[0.05, 'light-wave'], [0.1, 'card'], [0.45, 'orb-in'], [0.7, 'orb-out']]),
       jump(z(R.r6, 8, -447.5), z(R.podium, 4, -461), 1.4, 0.9),
-      decel(z(R.podium, 4, -461), z(R.podium, 0, -472), 1.6, [[0.5, 'paragraph']]),
+      decel(z(R.podium, 4, -461), z(R.podium, 0, -472), 1.6),
     ],
   },
   // 6 · PROMISE: ride up prod looking back at the whole run, then leap and glide.
@@ -288,6 +289,6 @@ export const judgmentBranch = (id: ChoiceId): readonly Segment[] => {
   return [
     run(CHOICE_SPOT, z(R.r5, 8, -379.5), 7.2, [[0.1, 'good-call']]),
     run(z(R.r5, 8, -379.5), z(R.r6, 8, -392.5), 4.6),
-    decel(z(R.r6, 8, -392.5), z(R.r6, 8, -400), 1.4, [[0.4, 'paragraph']]),
+    decel(z(R.r6, 8, -392.5), z(R.r6, 8, -400), 1.4),
   ];
 };

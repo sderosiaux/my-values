@@ -136,7 +136,7 @@ export function City() {
       <Boxes items={CITY} />
       <Boxes items={ROUTE} />
       <RoofDetail />
-      <mesh rotation-x={-Math.PI / 2} position={[0, 0, -400]} receiveShadow>
+      <mesh name="ground" rotation-x={-Math.PI / 2} position={[0, 0, -400]} receiveShadow>
         <planeGeometry args={[3000, 3000]} />
         <meshStandardMaterial color={WORLD.street} roughness={1} />
       </mesh>

@@ -1,7 +1,7 @@
 import { Text } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import type { Group } from 'three';
+import type { Group, Mesh } from 'three';
 import { ROOFS, SPOTS } from '../director/layout';
 import { VALUES } from '../content';
 import { firedAgo, getUi } from '../state';
@@ -43,14 +43,18 @@ function RopeRunner() {
   );
 }
 
-// PROMISE: prod, on the horizon the whole run, and the lift up its face.
+// PROMISE: prod, on the horizon the whole run, and the lift up its face. The lift is open on
+// the side you walk in from; its glass gate rises once you're aboard.
 function Prod() {
   const camera = useThree((s) => s.camera);
   const lift = useRef<Group>(null);
+  const gate = useRef<Mesh>(null);
   useFrame(() => {
-    if (!lift.current) return;
+    if (!lift.current || !gate.current) return;
     const riding = getUi().chapter === 6 && Math.abs(camera.position.z - SPOTS.elevator[2]) < 1 && camera.position.y > ROOFS.podium.h + 1;
     lift.current.position.y = riding ? camera.position.y - 1.7 : ROOFS.podium.h;
+    const ago = firedAgo('elevator');
+    gate.current.position.y = ago < 0 ? -0.6 : Math.min(0.55, -0.6 + ago * 2.4);
   });
   return (
     <group>
@@ -68,15 +72,23 @@ function Prod() {
           <boxGeometry args={[3.4, 0.2, 3]} />
           <meshStandardMaterial color="#C9CDD3" metalness={0.6} roughness={0.35} />
         </mesh>
-        <mesh position={[0, 0.6, 1.5]}>
-          <boxGeometry args={[3.4, 1.1, 0.05]} />
-          <meshStandardMaterial color="#DCE8F5" transparent opacity={0.35} roughness={0.05} metalness={0.2} />
+        {[-1.68, 1.68].map((x) => (
+          <mesh key={x} position={[x, 0.65, 0]}>
+            <boxGeometry args={[0.04, 1.1, 3]} />
+            <meshStandardMaterial color="#DCE8F5" transparent opacity={0.3} roughness={0.05} metalness={0.2} />
+          </mesh>
+        ))}
+        <mesh ref={gate} position={[0, -0.6, 1.48]}>
+          <boxGeometry args={[3.4, 1.1, 0.04]} />
+          <meshStandardMaterial color="#DCE8F5" transparent opacity={0.3} roughness={0.05} metalness={0.2} />
         </mesh>
       </group>
-      <mesh position={[0, 1, SPOTS.elevator[2] + 0.2]}>
-        <boxGeometry args={[0.3, 300, 0.3]} />
-        <meshStandardMaterial color="#C9CDD3" metalness={0.6} roughness={0.35} />
-      </mesh>
+      {[-1.95, 1.95].map((x) => (
+        <mesh key={x} position={[x, 80, SPOTS.elevator[2] - 1.2]}>
+          <boxGeometry args={[0.22, 160, 0.22]} />
+          <meshStandardMaterial color="#C9CDD3" metalness={0.6} roughness={0.35} />
+        </mesh>
+      ))}
     </group>
   );
 }

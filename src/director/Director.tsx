@@ -10,6 +10,10 @@ import { CHAPTERS, judgmentBranch, newPose, type Segment } from './script';
 const JUDGMENT = 4;
 const PROMISE = 6;
 const BASE_FOV = 70;
+// The run never waits for input: each pause lasts as long as the paragraph takes to read.
+const PARAGRAPH_DELAY = 1.6; // game seconds after the value card appears
+const MIN_PAUSE_MS = 1500;
+const readMs = (text: string) => 1500 + text.split(/\s+/).length * 240;
 const Z_AXIS = new Vector3(0, 0, 1);
 
 const SHOT_FOR: Record<string, readonly [Shot, number, number?]> = {
@@ -58,6 +62,9 @@ export function Director() {
     intro: -1, // title → first pose fly-in progress
     stride: 0,
     landAt: -10,
+    cardAt: -1, // gameTime the value card appeared
+    paragraphAt: 0, // performance.now() when the paragraph appeared
+    autoAt: Infinity, // performance.now() of the next automatic chapter
     shake: 0,
     failAt: -1,
     lastPos: new Vector3(),
@@ -73,6 +80,8 @@ export function Director() {
       p.index = 0;
       p.t = 0;
       p.cursor = 0;
+      p.cardAt = -1;
+      p.autoAt = Infinity;
       frame.picked = null;
       // Replaying a chapter resets its set pieces (crane, billboard, rope…) but keeps earlier ones.
       const earlier = new Set(CHAPTERS.slice(0, chapter).flatMap((c) => c.segments.flatMap((sg) => (sg.events ?? []).map(([, n]) => n))));
@@ -104,6 +113,7 @@ export function Director() {
     director.next = () => {
       const ui = getUi();
       if (ui.phase !== 'waiting') return;
+      p.autoAt = Infinity;
       if (ui.chapter === JUDGMENT) return begin(JUDGMENT + 1);
       if (ui.chapter < PROMISE) begin(ui.chapter + 1);
     };
@@ -157,14 +167,20 @@ export function Director() {
       const shot = SHOT_FOR[name];
       if (shot && !silent) audio.play(shot[0], shot[1], shot[2] ?? 1);
       if (name === 'land' || name === 'zip-off') { p.landAt = frame.gameTime; p.shake = 1; }
-      if (name === 'card') setUi({ showCard: true });
-      if (name === 'paragraph') setUi({ showParagraph: true });
+      if (name === 'card') { p.cardAt = frame.gameTime; setUi({ showCard: true }); }
+      if (name === 'good-call' || (silent && name === 'card' && getUi().chapter !== JUDGMENT)) showParagraph();
       if (name === 'promise') setUi({ chapter: PROMISE, showCard: true, showParagraph: true });
       if (name === 'glide') audio.playMusic('glide', 2);
       if (name === 'fail') { p.failAt = frame.gameTime; setUi({ phase: 'failed', subtitle: JUDGMENT_FAIL }); }
       if (name === 'end') setUi({ phase: 'ended' });
     };
-    (play.current as unknown as { fire: typeof fire }).fire = fire;
+    const showParagraph = () => {
+      if (getUi().showParagraph) return;
+      p.paragraphAt = performance.now();
+      setUi({ showParagraph: true });
+    };
+    (play.current as unknown as { fire: typeof fire; showParagraph: typeof showParagraph }).fire = fire;
+    (play.current as unknown as { showParagraph: typeof showParagraph }).showParagraph = showParagraph;
 
     return () => {
       window.removeEventListener('wheel', onWheel);
@@ -180,6 +196,7 @@ export function Director() {
     const s = scratch.current;
     const ui = getUi();
     const fire = (play.current as unknown as { fire: (n: string, silent?: boolean) => void }).fire;
+    const showParagraph = (play.current as unknown as { showParagraph: () => void }).showParagraph;
 
     // Title: slow orbit above the route, prod on the horizon.
     if (ui.phase === 'loading' || ui.phase === 'title') {
@@ -258,6 +275,10 @@ export function Director() {
         }
       }
     }
+
+    // The paragraph comes in while you run, so most of the reading happens in motion.
+    if (ui.phase === 'playing' && ui.showCard && !ui.showParagraph && ui.chapter !== JUDGMENT && p.cardAt >= 0 && frame.gameTime - p.cardAt > PARAGRAPH_DELAY) showParagraph();
+    if (ui.phase === 'waiting' && performance.now() >= p.autoAt) director.next();
 
     // Judgment fail: hold the fall, then go back to the choice.
     if (ui.phase === 'failed' && frame.gameTime - p.failAt > 2.6) {
@@ -340,7 +361,11 @@ export function Director() {
       if (ch === JUDGMENT && p.segments === CHAPTERS[JUDGMENT].segments) return setUi({ phase: 'choosing' });
       if (last.kind === 'fall') return;
       if (ch === PROMISE) return;
-      setUi({ phase: 'waiting', showCard: true, showParagraph: true });
+      if (!getUi().showParagraph) showParagraph();
+      const value = VALUES[Math.min(ch, VALUES.length - 1)];
+      const pause = Math.max(MIN_PAUSE_MS, readMs(value.paragraph) - (performance.now() - p.paragraphAt));
+      p.autoAt = performance.now() + pause;
+      setUi({ phase: 'waiting', showCard: true, autoMs: pause, autoToken: getUi().autoToken + 1 });
     }
   });
 

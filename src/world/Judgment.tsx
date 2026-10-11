@@ -1,7 +1,7 @@
 import { Billboard, Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useMemo, useState } from 'react';
-import { Color, DoubleSide, MeshBasicMaterial, Vector3 } from 'three';
+import { useMemo, useRef, useState } from 'react';
+import { Color, DoubleSide, MeshBasicMaterial, Vector3, type Group } from 'three';
 import { audio } from '../audio/engine';
 import { director } from '../director/Director';
 import { CHOICES, SPOTS, type ChoiceId } from '../director/layout';
@@ -46,6 +46,7 @@ function Route({ id, label, target, good }: { id: ChoiceId; label: string; targe
   const yaw = Math.atan2(to.x - from.x, to.z - from.z);
   const { m, uniforms } = useMemo(() => chevronMaterial(), []);
   const [hover, setHover] = useState(false);
+  const labelRef = useRef<Group>(null);
   uniforms.uLen.value = len;
 
   useFrame(() => {
@@ -56,6 +57,8 @@ function Route({ id, label, target, good }: { id: ChoiceId; label: string; targe
     const mine = frame.picked === id;
     m.color.copy(mine ? (good ? GOOD : BAD) : hover && choosing ? HOVER : AI);
     m.opacity = frame.picked && !mine ? base * 0.12 : base;
+    // Labels stand where the routes end, so they go once a route is picked.
+    if (labelRef.current) labelRef.current.visible = shown >= 0 && !frame.picked;
   });
 
   return (
@@ -70,7 +73,7 @@ function Route({ id, label, target, good }: { id: ChoiceId; label: string; targe
       >
         <planeGeometry args={[1.6, len, 1, 1]} />
       </mesh>
-      <Billboard position={[to.x, to.y + 2.4, to.z]}>
+      <Billboard ref={labelRef} name="timed-label" position={[to.x, to.y + 2.4, to.z]}>
         <Text font={FONT_DISPLAY} fontSize={0.9} color={hover ? WORLD.ink : WORLD.ai} anchorY="bottom" outlineWidth={0.04} outlineColor="#ffffff">
           {id.toUpperCase()}
         </Text>

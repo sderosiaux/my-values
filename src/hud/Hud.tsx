@@ -55,11 +55,16 @@ export function Hud({ onStart }: { onStart: () => void }) {
 
       <p className={`promise ${ui.chapter === 6 && ui.showParagraph && ui.phase !== 'ended' ? 'on' : ''}`}>{PROMISE}</p>
 
-      <button className={`prompt ${ui.phase === 'waiting' ? 'on' : ''}`} onClick={() => director.next()} tabIndex={ui.phase === 'waiting' ? 0 : -1}>
-        Scroll to keep running
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-          <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+      {/* The run moves on by itself; the bar shows when, and a click skips the wait. */}
+      <button
+        key={ui.autoToken}
+        className={`prompt ${ui.phase === 'waiting' ? 'on' : ''}`}
+        style={{ '--auto': `${ui.autoMs}ms` } as CSSProperties}
+        onClick={() => director.next()}
+        tabIndex={ui.phase === 'waiting' ? 0 : -1}
+      >
+        <span className="fill" aria-hidden />
+        <span className="label">Next: {ui.chapter < 5 ? VALUES[ui.chapter + 1].word : 'prod'}</span>
       </button>
 
       {ui.phase === 'choosing' && (
@@ -101,7 +106,7 @@ function TitleScreen({ visible, loading, progress, onStart }: { visible: boolean
         <button className="start" disabled={loading} onClick={onStart} autoFocus>
           {loading ? `Loading ${Math.round(progress * 100)}%` : 'Start the run'}
         </button>
-        <p className="hint">Sound on, headphones help. Scroll, space or swipe to move on.</p>
+        <p className="hint">Sound on, headphones help. It runs on its own.</p>
       </div>
     </div>
   );

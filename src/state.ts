@@ -32,6 +32,9 @@ export type UiState = {
   readonly muted: boolean;
   readonly reducedMotion: boolean;
   readonly loadProgress: number;
+  /** Auto-advance after a chapter: how long the pause lasts, and a token to restart its progress bar. */
+  readonly autoMs: number;
+  readonly autoToken: number;
 };
 
 let ui: UiState = {
@@ -43,6 +46,8 @@ let ui: UiState = {
   muted: false,
   reducedMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
   loadProgress: 0,
+  autoMs: 0,
+  autoToken: 0,
 };
 const listeners = new Set<() => void>();
 

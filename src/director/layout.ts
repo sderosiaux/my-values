@@ -28,19 +28,19 @@ export const ROUTE_ROOFS: readonly Roof[] = Object.values(ROOFS);
 
 export const SPOTS = {
   vaultBox: [0, ROOFS.start.h, -3] as const,
-  zipPole: [0, ROOFS.r1.h, -57.5] as const,
+  zipPole: [-1.3, ROOFS.r1.h, -57.5] as const, // beside the run line; an arm carries the cable over it
   zipTop: [0, ROOFS.r1.h + 4.6, -57.5] as const,
-  zipBottom: [0, ROOFS.r2.h + 4.2, -136] as const, // anchor sits back on the roof, past the release point
+  zipBottom: [4.5, ROOFS.r2.h + 4.2, -136] as const, // anchor off to the side, clear of the run after landing
   billboard: [0, ROOFS.r3.h, -213] as const,
   crane: [6.5, ROOFS.r4.h, -295] as const, // boom lift at the roof edge, extending toward r5
   ropeRunner: [1.4, ROOFS.r5.h, -334.4] as const, // standing on a vent box, rope held high
-  ropeTop: [-1.1, ROOFS.r4.h + 2.2, -299.4] as const, // tied to a slim pole left of the run line
+  ropeTop: [-1.6, ROOFS.r4.h + 2.2, -299.2] as const, // tied to a pole left of the run line; you grab it 2 m out
   ropeEnd: [0.6, ROOFS.r5.h + 3, -334] as const, // the runner holds it high, so you clear the parapet
   choice: [0, ROOFS.r5.h, -352] as const,
   beamStart: [8, ROOFS.r5.h, -380] as const,
   beamEnd: [8, ROOFS.r6.h, -392] as const,
   elevator: [0, ROOFS.podium.h, -478.5] as const,
-  prodSign: [0, ROOFS.prod.h + 9, -480] as const,
+  prodSign: [0, ROOFS.prod.h + 13, -480] as const, // high enough to walk under when stepping off the lift
 };
 
 // JUDGMENT: five AI-suggested routes from the choice spot. Only one has a way across.
