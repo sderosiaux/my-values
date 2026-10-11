@@ -37,6 +37,21 @@ const run = (from: P, to: P, speed: number, events?: Segment['events']): Segment
   return { kind: 'run', dur: a.distanceTo(b) / speed, events, pose: (u, o) => { lerpPose(a, b, u, o); o.bob = 1; } };
 };
 
+/** Running while the eyes stay on `target` until `until`, then back to the direction of travel. */
+const runLooking = (from: P, to: P, speed: number, target: P, until: number, events?: Segment['events']): Segment => {
+  const a = v(from), b = v(to), t = v(target);
+  return {
+    kind: 'run',
+    dur: a.distanceTo(b) / speed,
+    events,
+    pose: (u, o) => {
+      lerpPose(a, b, u, o);
+      o.bob = 1;
+      o.look = u < until ? (o.look ?? new Vector3()).copy(t) : null;
+    },
+  };
+};
+
 const decel = (from: P, to: P, dur: number, events?: Segment['events']): Segment => {
   const a = v(from), b = v(to);
   return { kind: 'run', dur, events, pose: (u, o) => { lerpPose(a, b, easeOut(u), o); o.bob = 1 - u; } };
@@ -197,8 +212,8 @@ export const CHAPTERS: readonly Chapter[] = [
   // 0 · END TO END: see prod on the horizon, the route draws itself, run, vault, first gap.
   {
     segments: [
-      stand(z(R.start, 0, 10), 3.4, [[0, [0, 120, -493]], [0.55, [0, 120, -493]], [1, [0, 41, -40]]], [[0.15, 'route'], [0.5, 'card']]),
-      run(z(R.start, 0, 10), z(R.start, 0, -1.5), 7.2),
+      // No standing start: the camera lands already sprinting, eyes on prod for a beat.
+      runLooking(z(R.start, 0, 13.5), z(R.start, 0, -1.5), 7.6, [0, 110, -493], 0.3, [[0.02, 'route'], [0.25, 'card']]),
       jump(z(R.start, 0, -1.5), z(R.start, 0, -4.6), 0.9, 0.5, { events: [[0, 'vault']] }),
       run(z(R.start, 0, -4.6), z(R.start, 0, -14), 7.8),
       jump(z(R.start, 0, -14), z(R.r1, 0, -22.5), 1.5, 0.85),

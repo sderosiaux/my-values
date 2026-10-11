@@ -7,7 +7,7 @@ export const MUSIC = ['run', 'glide'] as const;
 export const LOOPS = ['footsteps', 'wind', 'breath', 'zipline', 'heartbeat', 'city', 'glide-wind'] as const;
 export const SHOTS = [
   'jump', 'land', 'vault', 'slowmo-in', 'slowmo-out', 'billboard', 'boom', 'warning', 'rope', 'ui-hover', 'ui-select',
-  'ui-wrong', 'title-swell', 'achievement', 'light-wave', 'route',
+  'ui-wrong', 'title-swell', 'achievement', 'light-wave', 'route', 'unlock', 'launch',
 ] as const;
 
 export type Music = (typeof MUSIC)[number];

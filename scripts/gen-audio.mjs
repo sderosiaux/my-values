@@ -47,6 +47,8 @@ const SFX = [
   ['city.mp3', 'distant city ambience heard from a rooftop, faint traffic, a few birds, open air', 10, true],
   ['glide-wind.mp3', 'loud wind roar of a wingsuit glide at high speed', 6, true],
   ['title-swell.mp3', 'cinematic riser swelling into a bright impact, video game title screen start', 3, false],
+  ['unlock.mp3', 'short punchy arcade video game success jingle, bright rising synth arpeggio with a sparkly coin chime, level cleared', 1.6, false],
+  ['launch.mp3', 'cinematic launch whoosh with a deep bass hit, rushing air, start of a race', 1.8, false],
   ['achievement.mp3', 'bright uplifting achievement unlocked chime, video game', 2, false],
   ['light-wave.mp3', 'shimmering magical light whoosh spreading across a city', 2, false],
   ['route.mp3', 'holographic line drawing sound, rising synthetic shimmer', 1.5, false],

@@ -10,10 +10,12 @@ import { CHAPTERS, judgmentBranch, newPose, type Segment } from './script';
 const JUDGMENT = 4;
 const PROMISE = 6;
 const BASE_FOV = 70;
-// The run never waits for input: each pause lasts as long as the paragraph takes to read.
-const PARAGRAPH_DELAY = 1.6; // game seconds after the value card appears
-const MIN_PAUSE_MS = 1500;
-const readMs = (text: string) => 1500 + text.split(/\s+/).length * 240;
+// The run never waits for input. Pauses are short: the paragraph is read while running, the
+// pause only gives the eye a beat to land on it. Longer texts get a little more, never past MAX.
+const PARAGRAPH_DELAY = 1.2; // game seconds after the value card appears
+const MIN_PAUSE_MS = 1200; // long enough for the arcade "cleared" stamp to land
+const MAX_PAUSE_MS = 3000;
+const readMs = (text: string) => 1200 + text.split(/\s+/).length * 60;
 const Z_AXIS = new Vector3(0, 0, 1);
 
 const SHOT_FOR: Record<string, readonly [Shot, number, number?]> = {
@@ -102,7 +104,7 @@ export function Director() {
       p.intro = 0;
       scratch.current.from.copy(camera.position);
       scratch.current.fromQ.copy(camera.quaternion);
-      audio.play('title-swell', 0.9);
+      audio.play('launch', 1);
       audio.playMusic('run', 2.5);
       setUi({ phase: 'playing', chapter: 0 });
     };
@@ -212,14 +214,15 @@ export function Director() {
 
     // Title → first frame of the run.
     if (p.intro >= 0) {
-      p.intro = Math.min(1, p.intro + dt / 2.4);
-      const k = p.intro * p.intro * (3 - 2 * p.intro);
+      p.intro = Math.min(1, p.intro + dt / 1.3);
+      // Ease-in: the dive accelerates into the sprint instead of settling before it.
+      const k = p.intro * p.intro * (2 - p.intro);
       CHAPTERS[0].segments[0].pose(0, s.pose);
       camera.position.lerpVectors(s.from, s.pose.pos, k);
       s.m.lookAt(s.pose.pos, s.pose.look!, s.up);
       s.q.setFromRotationMatrix(s.m);
       camera.quaternion.slerpQuaternions(s.fromQ, s.q, k);
-      camera.fov = MathUtils.lerp(55, BASE_FOV, k);
+      camera.fov = MathUtils.lerp(55, BASE_FOV + 14, k);
       camera.updateProjectionMatrix();
       frame.gameTime += dt;
       if (p.intro >= 1) {
@@ -363,9 +366,11 @@ export function Director() {
       if (ch === PROMISE) return;
       if (!getUi().showParagraph) showParagraph();
       const value = VALUES[Math.min(ch, VALUES.length - 1)];
-      const pause = Math.max(MIN_PAUSE_MS, readMs(value.paragraph) - (performance.now() - p.paragraphAt));
+      const pause = MathUtils.clamp(readMs(value.paragraph) - (performance.now() - p.paragraphAt), MIN_PAUSE_MS, MAX_PAUSE_MS);
       p.autoAt = performance.now() + pause;
-      setUi({ phase: 'waiting', showCard: true, autoMs: pause, autoToken: getUi().autoToken + 1 });
+      // Arcade beat: the value is cleared.
+      audio.play('unlock', 0.95);
+      setUi({ phase: 'waiting', showCard: true, autoMs: pause, autoToken: getUi().autoToken + 1, unlockChapter: ch, unlockToken: getUi().unlockToken + 1 });
     }
   });
 

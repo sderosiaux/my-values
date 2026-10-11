@@ -35,6 +35,9 @@ export type UiState = {
   /** Auto-advance after a chapter: how long the pause lasts, and a token to restart its progress bar. */
   readonly autoMs: number;
   readonly autoToken: number;
+  /** Arcade "value cleared" moment: which chapter, and a token to replay the effect. */
+  readonly unlockChapter: number;
+  readonly unlockToken: number;
 };
 
 let ui: UiState = {
@@ -48,6 +51,8 @@ let ui: UiState = {
   loadProgress: 0,
   autoMs: 0,
   autoToken: 0,
+  unlockChapter: 0,
+  unlockToken: 0,
 };
 const listeners = new Set<() => void>();
 

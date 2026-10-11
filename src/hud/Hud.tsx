@@ -1,4 +1,4 @@
-import { useEffect, type CSSProperties } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import { audio } from '../audio/engine';
 import { director } from '../director/Director';
 import { CHOICES } from '../director/layout';
@@ -14,6 +14,9 @@ export function Hud({ onStart }: { onStart: () => void }) {
   const value = VALUES[Math.min(ui.chapter, 5)];
   const playing = ui.phase !== 'loading' && ui.phase !== 'title';
   const inValues = playing && ui.chapter < 6;
+  // Frozen while the pill fades out, so it doesn't flip to the value after next.
+  const nextLabel = useRef('');
+  if (ui.phase === 'waiting') nextLabel.current = ui.chapter < 5 ? VALUES[ui.chapter + 1].word : 'prod';
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -64,7 +67,7 @@ export function Hud({ onStart }: { onStart: () => void }) {
         tabIndex={ui.phase === 'waiting' ? 0 : -1}
       >
         <span className="fill" aria-hidden />
-        <span className="label">Next: {ui.chapter < 5 ? VALUES[ui.chapter + 1].word : 'prod'}</span>
+        <span className="label">Next: {nextLabel.current}</span>
       </button>
 
       {ui.phase === 'choosing' && (
@@ -86,8 +89,34 @@ export function Hud({ onStart }: { onStart: () => void }) {
       <div className={`flash ${ui.phase === 'failed' ? 'on' : ''}`} />
       {ui.phase === 'failed' && ui.subtitle && <p className="subtitle">{ui.subtitle}</p>}
 
+      <Unlock chapter={ui.unlockChapter} token={ui.unlockToken} />
       <TitleScreen visible={ui.phase === 'loading' || ui.phase === 'title'} loading={ui.phase === 'loading'} progress={ui.loadProgress} onStart={onStart} />
       <EndScreen visible={ui.phase === 'ended'} />
+    </div>
+  );
+}
+
+// Arcade beat when a value is cleared: the word slams in, sparks burst out.
+const SPARKS = Array.from({ length: 28 }, (_, i) => {
+  const r = (n: number) => ((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1;
+  return { a: `${(i / 28) * 360 + r(1) * 10}deg`, d: `${140 + r(2) * 200}px`, s: `${6 + r(3) * 9}px`, delay: `${r(4) * 0.08}s`, white: i % 3 === 0 };
+});
+
+function Unlock({ chapter, token }: { chapter: number; token: number }) {
+  if (!token) return null;
+  const v = VALUES[Math.min(chapter, VALUES.length - 1)];
+  return (
+    <div key={token} className="unlock" style={accentVar(chapter)} aria-hidden>
+      <div className="ring" />
+      <div className="burst">
+        {SPARKS.map((p, i) => (
+          <i key={i} style={{ '--a': p.a, '--d': p.d, '--s': p.s, animationDelay: p.delay, background: p.white ? '#fff' : undefined } as CSSProperties} />
+        ))}
+      </div>
+      <div className="stamp">
+        <b>{v.word}</b>
+        <span>This is what good looks like.</span>
+      </div>
     </div>
   );
 }
@@ -96,17 +125,17 @@ function TitleScreen({ visible, loading, progress, onStart }: { visible: boolean
   return (
     <div className={`screen ${visible ? '' : 'off'}`}>
       <div>
-        <h1>My values</h1>
         <p className="by">Stéphane Derosiaux</p>
-        <div className="bars" aria-hidden>
-          {VALUES.map((v) => (
-            <i key={v.word} style={{ background: ACCENTS[v.accent] }} />
-          ))}
-        </div>
+        <h1>
+          Ready to work
+          <br />
+          with me?
+        </h1>
+        <p className="sub">See what it's like, at full speed.</p>
         <button className="start" disabled={loading} onClick={onStart} autoFocus>
-          {loading ? `Loading ${Math.round(progress * 100)}%` : 'Start the run'}
+          {loading ? `Loading ${Math.round(progress * 100)}%` : "I'm ready"}
         </button>
-        <p className="hint">Sound on, headphones help. It runs on its own.</p>
+        <p className="hint">Sound on. It runs on its own.</p>
       </div>
     </div>
   );

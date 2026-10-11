@@ -83,10 +83,12 @@ button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 .screen { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: auto; transition: opacity 0.9s; }
 .screen.off { opacity: 0; pointer-events: none; }
 .screen:not(.end) { background: radial-gradient(ellipse 60% 45% at 50% 48%, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0) 70%); }
-.screen h1 { margin: 0; font-weight: 800; font-size: clamp(64px, 13vw, 190px); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); text-shadow: 0 2px 60px rgba(255, 255, 255, 0.9); }
-.screen .by { margin: 18px 0 0; font-size: clamp(16px, 1.5vw, 20px); font-weight: 600; color: var(--ink); }
-.screen .bars { display: flex; gap: 6px; justify-content: center; margin: 26px 0 30px; }
-.screen .bars i { width: 34px; height: 6px; border-radius: 3px; }
+.screen h1 { margin: 0; font-weight: 800; font-size: clamp(54px, 9.5vw, 150px); line-height: 0.88; letter-spacing: -0.05em; color: var(--ink); text-shadow: 0 2px 60px rgba(255, 255, 255, 0.9); transform: skewX(-7deg); animation: title-in 0.9s var(--ease-out) both; transition: transform 0.7s cubic-bezier(0.5, 0, 0.75, 0), filter 0.7s, opacity 0.7s; }
+.screen .sub { margin: 18px 0 30px; font-size: clamp(17px, 1.7vw, 22px); font-weight: 600; color: var(--ink); }
+@keyframes title-in { from { opacity: 0; transform: translateX(-6%) skewX(-16deg); filter: blur(6px); } }
+/* Launch: the title rushes past the camera as the run starts. */
+.screen.off h1 { transform: scale(2.8) skewX(-7deg); filter: blur(10px); opacity: 0; }
+.screen .by { margin: 0 0 14px; font-size: clamp(14px, 1.2vw, 17px); font-weight: 600; color: var(--ink-soft); }
 .start { background: var(--ink); color: #fff; border: 0; border-radius: 999px; padding: 16px 30px; font-size: 18px; font-weight: 700; cursor: pointer; transition: transform 0.2s var(--ease-out); }
 .start:hover:not(:disabled) { transform: scale(1.04); }
 .start:disabled { opacity: 0.6; cursor: progress; }
@@ -103,4 +105,32 @@ button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .strip, .prompt, .route span i, .promise, .screen { transition: none; }
+}
+
+/* Value cleared: an arcade stamp with a spark burst and a ring. */
+.unlock { position: absolute; left: 50%; top: 42%; width: 0; height: 0; pointer-events: none; }
+.unlock .stamp { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; animation: stamp 1.7s cubic-bezier(0.2, 1.3, 0.4, 1) forwards; }
+.unlock .stamp b { display: block; font-weight: 800; font-size: clamp(56px, 9vw, 132px); line-height: 0.9; letter-spacing: -0.045em; color: var(--accent); transform: skewX(-8deg);
+  text-shadow: 0 0 46px color-mix(in srgb, var(--accent) 55%, transparent), 0 3px 0 rgba(23, 32, 43, 0.12); }
+.unlock .stamp span { display: inline-block; margin-top: 10px; padding: 7px 14px; border-radius: 999px; background: var(--paper); color: var(--ink); font-weight: 700; font-size: 17px; }
+.unlock .burst i { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); border-radius: 2px; background: var(--accent); opacity: 0;
+  animation: spark 0.95s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
+.unlock .ring { position: absolute; left: 0; top: 0; width: 40px; height: 40px; margin: -20px; border-radius: 50%; border: 6px solid var(--accent); opacity: 0; animation: ring 0.8s ease-out forwards; }
+@keyframes stamp {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(2.4) rotate(-6deg); }
+  16% { opacity: 1; transform: translate(-50%, -50%) scale(0.92) rotate(-2deg); }
+  26% { transform: translate(-50%, -50%) scale(1.05) rotate(-3deg); }
+  78% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-3deg); }
+  100% { opacity: 0; transform: translate(-50%, -62%) scale(1) rotate(-3deg); }
+}
+@keyframes spark {
+  0% { opacity: 1; transform: rotate(var(--a)) translateX(10px) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateX(var(--d)) scale(0.3); }
+}
+@keyframes ring { 0% { opacity: 0.9; transform: scale(0.5); } 100% { opacity: 0; transform: scale(14); } }
+@media (prefers-reduced-motion: reduce) {
+  .screen h1 { animation: none; }
+  .unlock .burst, .unlock .ring { display: none; }
+  .unlock .stamp { animation: stamp-fade 1.7s linear forwards; transform: translate(-50%, -50%); }
+  @keyframes stamp-fade { 0%, 100% { opacity: 0; } 15%, 80% { opacity: 1; } }
 }
