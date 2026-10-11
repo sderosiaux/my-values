@@ -23,3 +23,7 @@ npm run dev
 ```
 
 `?debug` exposes `window.__mv` to drive the run from a test browser.
+
+## Credits
+
+First-person arms: ["FREE GameReady [FPS Female Arms]"](https://sketchfab.com/3d-models/007f5dd998ad4376943ed6fb3dfa2e15) by bamenwo05, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Textures re-encoded and geometry compressed; posed at runtime from the model's own poses.

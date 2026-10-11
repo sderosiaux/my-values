@@ -28,8 +28,6 @@ function ExposeScene() {
   return null;
 }
 
-const SHOW_ARMS = false;
-
 export function App() {
   const [quality, setQuality] = useState<'high' | 'low'>('high');
 
@@ -68,13 +66,10 @@ export function App() {
         </Suspense>
         <Director />
         <ExposeScene />
-        {/* First-person arms are off until a production-quality rigged, textured model replaces the
-            WebXR hand (too low-poly: fingers fold into blocks). Mount after the director when back. */}
-        {SHOW_ARMS && (
-          <Suspense fallback={null}>
-            <Arms />
-          </Suspense>
-        )}
+        {/* After the director so the arms read this frame's camera, not the last one. */}
+        <Suspense fallback={null}>
+          <Arms />
+        </Suspense>
         <Effects quality={quality} />
       </Canvas>
       <Hud onStart={start} />
